@@ -1,4 +1,5 @@
 FROM node:0.10.38
+# FROM node:latest
 MAINTAINER Nathan LeClaire <nathan@docker.com>
 
 ADD . /app
@@ -22,6 +23,24 @@ RUN wget -O bxcf.tgz 'https://clis.ng.bluemix.net/download/bluemix-cli/0.6.7/lin
 
 # install nano
 RUN apt-get install --yes nano
+
+# install wsk
+RUN wget -O wsk.tgz 'https://github.com/apache/incubator-openwhisk-cli/releases/download/latest/OpenWhisk_CLI-latest-linux-amd64.tgz' && \
+    tar -C /usr/bin -xvzf wsk.tgz && \
+    rm wsk.tgz
+
+# install bx wsk
+RUN bx plugin install Cloud-Functions -r Bluemix
+
+# Install Java
+RUN apt-get -y -f install default-jdk
+
+# Install Maven
+RUN apt-get -y install maven
+
+
+# Install python
+RUN apt-get -y install python3 python3-pip
 
 EXPOSE 80
 
