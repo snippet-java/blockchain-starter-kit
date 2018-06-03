@@ -2,6 +2,9 @@ FROM node:0.10.38
 # FROM node:latest
 MAINTAINER Nathan LeClaire <nathan@docker.com>
 
+# Change root password
+RUN echo 'root:root' | chpasswd
+
 ADD . /app
 WORKDIR /app
 RUN npm install
@@ -35,12 +38,15 @@ RUN bx plugin install Cloud-Functions -r Bluemix
 # Install Java
 RUN apt-get -y -f install default-jdk
 
-# Install Maven
-RUN apt-get -y install maven
+# Install Maven - disable for now as it needs 256M to run properly
+# RUN apt-get -y install maven
 
 
 # Install python
 RUN apt-get -y install python3 python3-pip
+
+# Install sqlite
+RUN apt-get -y install sqlite3
 
 EXPOSE 80
 
